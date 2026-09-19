@@ -1,11 +1,18 @@
-/* elevator collage styles — positioning and door animation */
+/* elevator collage — positioning + door animation */
+
+@font-face {
+  font-family: "Pencilant Script";
+  src: url("assets/fonts/pencilant.script.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --page-bg: #0a0a0a;
   --collage-bg: #000000;
 
-  /* reposition controls (prefer px for panel/screen)
-     +x = right, +y = down */
+  /* reposition knobs — +x right, +y down */
   --elevator-zoom: 1.4;
 
   --elevator-shift-x: 0%;
@@ -26,14 +33,33 @@
   --panel-shift-x: 0px;
   --panel-shift-y: -15px;
 
-  /* door slide distance needed a bit of trial and error */
+  /* welcome sign (homepage, left side) */
+  --welcome-width: 220px;
+  --welcome-shift-x: 300px;
+  --welcome-shift-y: 0px;
+  --welcome-left: 4%;
+  --welcome-top: 18%;
+  --welcome-fly-duration: 1.1s;
+
+  /* sticky note sits under welcome coords, these are extra offsets only */
+  --note-width: 100px;
+  --note-shift-x: 5px; /* + right / - left */
+  --note-shift-y: -50px; /* + down / - up */
+  --note-gap-below-sign: 10px;
+  --note-text-rotate: -6deg; /* match the tilt in the png */
+  --note-fade-duration: 0.9s;
+  --note-fly-duration: 1.1s;
+  --note-idle-ms: 10000; /* fade in after idle */
+
+  /* door slide — took some trial and error */
   --door-duration: 1.75s;
   --door-easing: cubic-bezier(0.45, 0.02, 0.2, 1);
   --door-open-distance: 12%;
 
-  /* closed-door travel times */
-  --travel-duration-near: 3s; /* floor difference of 1 */
-  --travel-duration-far: 5s; /* floor difference of 2+ */
+  /* travel times while doors are closed */
+  --travel-duration-near: 3s; /* floor diff of 1 */
+  --travel-duration-far: 5s; /* floor diff of 2+ */
+  --travel-duration-initial: 3s; /* first trip from homepage */
 }
 
 *,
@@ -64,9 +90,13 @@ img {
 
 button {
   font: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
 }
 
-/* css grid layout required for the assignment */
+/* css grid required for the assignment */
 .page {
   display: grid;
   grid-template-columns: 1fr;
@@ -82,6 +112,12 @@ button {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  /* hide till graphics load so collage doesnt flash thru */
+  opacity: 0;
+}
+
+.elevator.elevator--ready {
+  opacity: 1;
 }
 
 .elevator__stage {
@@ -93,9 +129,10 @@ button {
   transform-origin: center center;
 }
 
-/* frame and collage stay put — only doors slide */
+/* frame + collage stay put, only doors slide */
 .elevator__collage,
-.elevator__frame {
+.elevator__frame,
+.elevator__closed-shot {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -103,10 +140,205 @@ button {
   transform: translate(var(--elevator-shift-x), var(--elevator-shift-y));
 }
 
-/* layer order: collage, doors, then frame on top */
+/* homepage closed elevator photo */
+.elevator__closed-shot {
+  z-index: 4;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.elevator__interactive {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.elevator--home .elevator__interactive {
+  visibility: hidden;
+}
+
+.elevator:not(.elevator--home) .elevator__closed-shot {
+  display: none;
+}
+
+.elevator__welcome {
+  position: absolute;
+  z-index: 6;
+  top: var(--welcome-top);
+  left: var(--welcome-left);
+  width: var(--welcome-width);
+  height: auto;
+  transform: translate(var(--welcome-shift-x), var(--welcome-shift-y));
+  transform-origin: center center;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+/* keep sign around during fly-away even after homepage mode ends */
+.elevator:not(.elevator--home)
+  .elevator__welcome:not(.elevator__welcome--fly-away) {
+  display: none;
+}
+
+.elevator__welcome--fly-away {
+  animation: welcome-fly-away var(--welcome-fly-duration)
+    cubic-bezier(0.4, 0, 0.7, 0.2) forwards;
+}
+
+@keyframes welcome-fly-away {
+  0% {
+    transform: translate(var(--welcome-shift-x), var(--welcome-shift-y))
+      rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(
+        calc(var(--welcome-shift-x) - 110vw),
+        calc(var(--welcome-shift-y) - 55vh)
+      )
+      rotate(-28deg) scale(0.35);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elevator__welcome--fly-away {
+    animation: welcome-fade-away 0.25s ease forwards;
+  }
+
+  @keyframes welcome-fade-away {
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+/* sticky note — hidden until idle timer */
+.elevator__note {
+  position: absolute;
+  z-index: 7;
+  width: var(--note-width);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+  transition:
+    opacity var(--note-fade-duration) ease,
+    visibility 0s linear var(--note-fade-duration);
+}
+
+/* same spot on homepage + floors (under welcome-sign coords) */
+.elevator__note--under-sign {
+  left: var(--welcome-left);
+  top: var(--welcome-top);
+  transform: translate(
+      calc(
+        var(--welcome-shift-x) + (var(--welcome-width) - var(--note-width)) /
+          2 + var(--note-shift-x)
+      ),
+      calc(
+        var(--welcome-shift-y) + var(--welcome-width) * 1.55 +
+          var(--note-gap-below-sign) + var(--note-shift-y)
+      )
+    )
+    rotate(-6deg);
+}
+
+.elevator__note.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity var(--note-fade-duration) ease,
+    visibility 0s linear 0s;
+}
+
+.elevator__note.is-visible.elevator__note--home-link {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.elevator__note-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.elevator__note-text {
+  position: absolute;
+  inset: 30% 12% 18%;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: #1a1a1a;
+  font-family: "Pencilant Script", cursive;
+  font-size: calc(var(--note-width) * 0.17);
+  font-weight: normal;
+  line-height: 1.05;
+  text-align: center;
+  letter-spacing: 0.02em;
+  transform: rotate(var(--note-text-rotate));
+}
+
+.elevator__note--fly-away {
+  animation: note-fly-away var(--note-fly-duration)
+    cubic-bezier(0.4, 0, 0.7, 0.2) forwards;
+  pointer-events: none !important;
+}
+
+@keyframes note-fly-away {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(
+        calc(
+          var(--welcome-shift-x) + (var(--welcome-width) - var(--note-width)) /
+            2 + var(--note-shift-x) - 90vw
+        ),
+        calc(
+          var(--welcome-shift-y) + var(--welcome-width) * 1.55 +
+            var(--note-gap-below-sign) + var(--note-shift-y) - 40vh
+        )
+      )
+      rotate(-32deg) scale(0.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elevator__note--fly-away {
+    animation: note-fade-away 0.25s ease forwards;
+  }
+
+  @keyframes note-fade-away {
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+/* z order: collage, doors, frame on top */
 .elevator__collage {
   z-index: 1;
+  display: grid;
+  place-items: center;
   background: var(--collage-bg);
+  color: #f2f2f2;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* TODO: replace with real css grid collage */
+.elevator__collage-label {
+  margin: 0;
+  max-width: 90%;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: clamp(1.25rem, 3.5vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
 }
 
 .elevator__door,
@@ -129,7 +361,6 @@ button {
   z-index: 3;
 }
 
-/* closed = default png positions */
 .elevator--closed .elevator__door--left,
 .elevator--closed .left-door,
 .elevator--closed .elevator__door--right,
@@ -137,7 +368,7 @@ button {
   transform: translate(var(--elevator-shift-x), var(--elevator-shift-y));
 }
 
-/* open — slide behind the frame (translateX only, not width) */
+/* open = translateX only (not width) so it slides behind the frame */
 .elevator--open .elevator__door--left,
 .elevator--open .left-door {
   transform: translate(
@@ -172,7 +403,6 @@ button {
   }
 }
 
-/* screen and button panel on the right wall */
 .elevator__interface {
   position: absolute;
   z-index: 5;
@@ -188,6 +418,7 @@ button {
   justify-items: center;
   gap: 4%;
   pointer-events: none;
+  overflow: visible;
 }
 
 /* crop empty margins in the screen png */
@@ -209,7 +440,6 @@ button {
   max-width: none;
 }
 
-/* floor number overlaid on the blank screen image */
 .elevator__display-readout {
   position: absolute;
   inset: 20% 20%;
@@ -240,7 +470,7 @@ button {
   transform: translate(var(--panel-shift-x), var(--panel-shift-y));
 }
 
-/* crop transparent margins on the panel png */
+/* crop transparent margins on panel png */
 .elevator__panel-image {
   position: absolute;
   inset: auto;
@@ -251,7 +481,7 @@ button {
   max-width: none;
 }
 
-/* clickable areas over buttons 3, 2, 1 (positions matched to the art) */
+/* hitboxes over buttons 3 / 2 / 1 — matched to the art */
 .elevator__buttons {
   position: absolute;
   inset: 0;

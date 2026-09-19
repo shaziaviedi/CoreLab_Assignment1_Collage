@@ -5,34 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Elevator Collage — Entrance</title>
     <link rel="stylesheet" href="style.css" />
+    <!-- kick off elevator graphics early -->
+    <link
+      rel="preload"
+      href="assets/elevator-images/elevator.png"
+      as="image"
+    />
+    <link
+      rel="preload"
+      href="assets/elevator-images/elevator-door-left.png"
+      as="image"
+    />
+    <link
+      rel="preload"
+      href="assets/elevator-images/elevator-door-right.png"
+      as="image"
+    />
+    <link
+      rel="preload"
+      href="assets/elevator-images/elevator-doors-removed.png"
+      as="image"
+    />
+    <link
+      rel="preload"
+      href="assets/homepage-images/welcome-sign.png"
+      as="image"
+    />
   </head>
-  <body>
+  <body data-page="home">
     <main class="page">
-      <section class="elevator elevator--closed" aria-label="Elevator entrance">
-        <!-- stacking: collage, doors, frame, then ui on top -->
+      <section
+        class="elevator elevator--home elevator--closed"
+        aria-label="Elevator entrance"
+      >
         <div class="elevator__stage">
-          <div class="elevator__collage" aria-hidden="true"></div>
-
+          <!-- homepage closed elevator shot -->
           <img
-            class="elevator__door elevator__door--left left-door"
-            src="assets/elevator-images/elevator-door-left.png"
-            alt="Left elevator door"
+            class="elevator__closed-shot"
+            src="assets/elevator-images/elevator.png"
+            alt="Elevator interior with doors closed"
             draggable="false"
           />
 
-          <img
-            class="elevator__door elevator__door--right right-door"
-            src="assets/elevator-images/elevator-door-right.png"
-            alt="Right elevator door"
-            draggable="false"
-          />
+          <!-- layered version — swapped in on first button press -->
+          <div class="elevator__interactive" hidden>
+            <div class="elevator__collage" aria-hidden="true"></div>
 
-          <img
-            class="elevator__frame"
-            src="assets/elevator-images/elevator-doors-removed.png"
-            alt="Elevator interior frame with open doorway, metal walls, handrails, and ceiling light"
-            draggable="false"
-          />
+            <img
+              class="elevator__door elevator__door--left left-door"
+              src="assets/elevator-images/elevator-door-left.png"
+              alt="Left elevator door"
+              draggable="false"
+            />
+
+            <img
+              class="elevator__door elevator__door--right right-door"
+              src="assets/elevator-images/elevator-door-right.png"
+              alt="Right elevator door"
+              draggable="false"
+            />
+
+            <img
+              class="elevator__frame"
+              src="assets/elevator-images/elevator-doors-removed.png"
+              alt="Elevator interior frame with open doorway, metal walls, handrails, and ceiling light"
+              draggable="false"
+            />
+          </div>
 
           <div class="elevator__interface">
             <div class="elevator__display-wrap">
@@ -42,7 +81,6 @@
                 alt="Elevator floor display screen"
                 draggable="false"
               />
-              <!-- floor number is HTML text (not baked into the image) -->
               <div
                 class="elevator__display-readout"
                 id="floor-display"
@@ -62,7 +100,6 @@
                 alt="Elevator button panel with floors 3, 2, and 1 from top to bottom"
                 draggable="false"
               />
-              <!-- real elevator order: 3 on top, then 2, then 1 -->
               <div
                 class="elevator__buttons"
                 role="group"
@@ -92,11 +129,27 @@
               </div>
             </div>
           </div>
+
+          <img
+            class="elevator__welcome"
+            src="assets/homepage-images/welcome-sign.png"
+            alt="Welcome to my world — vintage marquee sign with light bulbs and an arrow"
+            draggable="false"
+          />
+
+          <div class="elevator__note elevator__note--under-sign" id="sticky-note">
+            <img
+              class="elevator__note-image"
+              src="assets/homepage-images/note.png"
+              alt=""
+              draggable="false"
+            />
+            <p class="elevator__note-text">PRESS A BUTTON</p>
+          </div>
         </div>
       </section>
     </main>
 
-    <!-- music during closed-door travel -->
     <audio
       id="elevator-music"
       src="assets/audio/elevator-music.mp3"
@@ -104,6 +157,6 @@
       preload="auto"
     ></audio>
 
-    <script src="script.js"></script>
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>

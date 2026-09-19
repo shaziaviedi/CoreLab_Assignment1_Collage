@@ -3,17 +3,147 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Floor 3</title>
+    <title>Floor 3 — Dreams</title>
     <link rel="stylesheet" href="style.css" />
+    <!-- doors + frame first so collage doesnt flash -->
+    <link
+      rel="preload"
+      href="assets/elevator-images/elevator-door-left.png"
+      as="image"
+    />
+    <link
+      rel="preload"
+      href="assets/elevator-images/elevator-door-right.png"
+      as="image"
+    />
+    <link
+      rel="preload"
+      href="assets/elevator-images/elevator-doors-removed.png"
+      as="image"
+    />
+    <link
+      rel="preload"
+      href="assets/elevator-images/elevator-screen.png"
+      as="image"
+    />
+    <link
+      rel="preload"
+      href="assets/elevator-images/button-panel.png"
+      as="image"
+    />
   </head>
-  <body>
-    <main class="page" style="place-items: center; color: #eee">
-      <div>
-        <h1>Floor 3</h1>
-        <!-- TODO: add collage content -->
-        <p>Collage content coming soon.</p>
-        <p><a href="index.html" style="color: #ccc">Back to elevator</a></p>
-      </div>
+  <body data-floor="3">
+    <main class="page">
+      <section class="elevator elevator--closed" aria-label="Elevator floor 3">
+        <!-- collage → doors → frame → ui -->
+        <div class="elevator__stage">
+          <div class="elevator__collage">
+            <p class="elevator__collage-label">FLOOR 3 — DREAMS</p>
+          </div>
+
+          <img
+            class="elevator__door elevator__door--left left-door"
+            src="assets/elevator-images/elevator-door-left.png"
+            alt="Left elevator door"
+            draggable="false"
+          />
+
+          <img
+            class="elevator__door elevator__door--right right-door"
+            src="assets/elevator-images/elevator-door-right.png"
+            alt="Right elevator door"
+            draggable="false"
+          />
+
+          <img
+            class="elevator__frame"
+            src="assets/elevator-images/elevator-doors-removed.png"
+            alt="Elevator interior frame with open doorway, metal walls, handrails, and ceiling light"
+            draggable="false"
+          />
+
+          <div class="elevator__interface">
+            <div class="elevator__display-wrap">
+              <img
+                class="elevator__display"
+                src="assets/elevator-images/elevator-screen.png"
+                alt="Elevator floor display screen"
+                draggable="false"
+              />
+              <div
+                class="elevator__display-readout"
+                id="floor-display"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                <span class="elevator__display-number" id="floor-number"></span>
+              </div>
+            </div>
+
+            <div class="elevator__panel">
+              <img
+                class="elevator__panel-image"
+                id="button-panel-image"
+                src="assets/elevator-images/button-panel.png"
+                alt="Elevator button panel with floors 3, 2, and 1 from top to bottom"
+                draggable="false"
+              />
+              <div
+                class="elevator__buttons"
+                role="group"
+                aria-label="Floor selection"
+              >
+                <button
+                  type="button"
+                  class="elevator__button"
+                  data-floor="3"
+                  aria-label="Floor 3"
+                  aria-pressed="false"
+                ></button>
+                <button
+                  type="button"
+                  class="elevator__button"
+                  data-floor="2"
+                  aria-label="Floor 2"
+                  aria-pressed="false"
+                ></button>
+                <button
+                  type="button"
+                  class="elevator__button"
+                  data-floor="1"
+                  aria-label="Floor 1"
+                  aria-pressed="false"
+                ></button>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="elevator__note elevator__note--under-sign elevator__note--home-link"
+            id="sticky-note"
+            aria-label="Go home"
+          >
+            <img
+              class="elevator__note-image"
+              src="assets/homepage-images/note.png"
+              alt=""
+              draggable="false"
+            />
+            <span class="elevator__note-text">HOME?</span>
+          </button>
+        </div>
+      </section>
     </main>
+
+    <audio
+      id="elevator-music"
+      src="assets/audio/elevator-music.mp3"
+      loop
+      preload="auto"
+    ></audio>
+
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>
