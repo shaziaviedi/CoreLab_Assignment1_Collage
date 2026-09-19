@@ -1,0 +1,287 @@
+/* elevator collage styles — positioning and door animation */
+
+:root {
+  --page-bg: #0a0a0a;
+  --collage-bg: #000000;
+
+  /* reposition controls (prefer px for panel/screen)
+     +x = right, +y = down */
+  --elevator-zoom: 1.4;
+
+  --elevator-shift-x: 0%;
+  --elevator-shift-y: -6%;
+
+  --interface-shift-x: -433px;
+  --interface-shift-y: 120px;
+  --interface-top: 80px;
+  --interface-right: 30px;
+  --interface-width: 100px;
+
+  --screen-width: 170px;
+  --panel-width: 80px;
+
+  --screen-shift-x: 0px;
+  --screen-shift-y: 0px;
+
+  --panel-shift-x: 0px;
+  --panel-shift-y: -15px;
+
+  /* door slide distance needed a bit of trial and error */
+  --door-duration: 1.75s;
+  --door-easing: cubic-bezier(0.45, 0.02, 0.2, 1);
+  --door-open-distance: 12%;
+
+  /* closed-door travel times */
+  --travel-duration-near: 3s; /* floor difference of 1 */
+  --travel-duration-far: 5s; /* floor difference of 2+ */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background: var(--page-bg);
+  color: #f2f2f2;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+img {
+  display: block;
+  max-width: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+button {
+  font: inherit;
+}
+
+/* css grid layout required for the assignment */
+.page {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
+  padding: 0;
+}
+
+.elevator {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.elevator__stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform: scale(var(--elevator-zoom));
+  transform-origin: center center;
+}
+
+/* frame and collage stay put — only doors slide */
+.elevator__collage,
+.elevator__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: translate(var(--elevator-shift-x), var(--elevator-shift-y));
+}
+
+/* layer order: collage, doors, then frame on top */
+.elevator__collage {
+  z-index: 1;
+  background: var(--collage-bg);
+}
+
+.elevator__door,
+.left-door,
+.right-door {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  object-fit: fill;
+  pointer-events: none;
+  transform: translate(var(--elevator-shift-x), var(--elevator-shift-y));
+  transition: transform var(--door-duration) var(--door-easing);
+  will-change: transform;
+}
+
+.elevator__door--right,
+.right-door {
+  z-index: 3;
+}
+
+/* closed = default png positions */
+.elevator--closed .elevator__door--left,
+.elevator--closed .left-door,
+.elevator--closed .elevator__door--right,
+.elevator--closed .right-door {
+  transform: translate(var(--elevator-shift-x), var(--elevator-shift-y));
+}
+
+/* open — slide behind the frame (translateX only, not width) */
+.elevator--open .elevator__door--left,
+.elevator--open .left-door {
+  transform: translate(
+    calc(var(--elevator-shift-x) - var(--door-open-distance)),
+    var(--elevator-shift-y)
+  );
+}
+
+.elevator--open .elevator__door--right,
+.elevator--open .right-door {
+  transform: translate(
+    calc(var(--elevator-shift-x) + var(--door-open-distance)),
+    var(--elevator-shift-y)
+  );
+}
+
+.elevator__frame {
+  z-index: 4;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --door-duration: 0.01ms;
+  }
+
+  .elevator__door,
+  .left-door,
+  .right-door {
+    transition: none;
+  }
+}
+
+/* screen and button panel on the right wall */
+.elevator__interface {
+  position: absolute;
+  z-index: 5;
+  top: var(--interface-top);
+  right: var(--interface-right);
+  bottom: 10%;
+  width: var(--interface-width);
+  transform: translate(var(--interface-shift-x), var(--interface-shift-y));
+
+  display: grid;
+  grid-template-rows: auto 1fr;
+  align-content: start;
+  justify-items: center;
+  gap: 4%;
+  pointer-events: none;
+}
+
+/* crop empty margins in the screen png */
+.elevator__display-wrap {
+  position: relative;
+  width: var(--screen-width);
+  aspect-ratio: 511 / 486;
+  overflow: hidden;
+  transform: translate(var(--screen-shift-x), var(--screen-shift-y));
+  container-type: size;
+}
+
+.elevator__display {
+  position: absolute;
+  width: 239.3%;
+  height: 264.6%;
+  left: -93.7%;
+  top: -23.5%;
+  max-width: none;
+}
+
+/* floor number overlaid on the blank screen image */
+.elevator__display-readout {
+  position: absolute;
+  inset: 20% 20%;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.elevator__display-number {
+  color: #f4f4f4;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 45cqmin;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.55),
+    0 0 18px rgba(255, 255, 255, 0.25);
+}
+
+.elevator__panel {
+  position: relative;
+  width: var(--panel-width);
+  aspect-ratio: 422 / 1156;
+  overflow: hidden;
+  pointer-events: auto;
+  transform: translate(var(--panel-shift-x), var(--panel-shift-y));
+}
+
+/* crop transparent margins on the panel png */
+.elevator__panel-image {
+  position: absolute;
+  inset: auto;
+  width: 242.7%;
+  height: 132.9%;
+  left: -71.8%;
+  top: -15%;
+  max-width: none;
+}
+
+/* clickable areas over buttons 3, 2, 1 (positions matched to the art) */
+.elevator__buttons {
+  position: absolute;
+  inset: 0;
+}
+
+.elevator__button {
+  position: absolute;
+  left: 28%;
+  width: 44%;
+  height: 15%;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.elevator__button[data-floor="3"] {
+  top: 22.5%;
+}
+
+.elevator__button[data-floor="2"] {
+  top: 43.5%;
+}
+
+.elevator__button[data-floor="1"] {
+  top: 62.5%;
+}
+
+.elevator__button:focus-visible {
+  outline: 2px solid #f5f5f5;
+  outline-offset: 2px;
+}
