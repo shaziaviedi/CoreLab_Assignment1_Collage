@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Floor 1 — People</title>
     <link rel="stylesheet" href="style.css" />
-    <!-- doors + frame first so collage doesnt flash -->
+    <link rel="stylesheet" href="floor1.css" />
+    <!-- doors & frame first so collage doesnt flash -->
     <link
       rel="preload"
       href="assets/elevator-images/elevator-door-left.png"
@@ -37,9 +38,10 @@
       <section class="elevator elevator--closed" aria-label="Elevator floor 1">
         <!-- collage → doors → frame → ui -->
         <div class="elevator__stage">
-          <div class="elevator__collage">
-            <p class="elevator__collage-label">FLOOR 1 — PEOPLE</p>
-          </div>
+          <div
+            class="elevator__collage elevator__collage--people"
+            aria-hidden="true"
+          ></div>
 
           <img
             class="elevator__door elevator__door--left left-door"
@@ -61,6 +63,214 @@
             alt="Elevator interior frame with open doorway, metal walls, handrails, and ceiling light"
             draggable="false"
           />
+
+          <!-- catches clicks on metal so they dont reach people behind the frame -->
+          <div class="people-blockers" aria-hidden="true">
+            <div class="people-blocker people-blocker--left"></div>
+            <div class="people-blocker people-blocker--right"></div>
+            <div class="people-blocker people-blocker--top"></div>
+            <div class="people-blocker people-blocker--bottom"></div>
+          </div>
+
+          <!-- people behind the doors -->
+          <div class="people-doorway">
+            <div
+              class="people-crowd"
+              role="group"
+              aria-label="Crowd of people outside the elevator"
+            >
+              <div class="crowd-grid">
+                <!-- row 1 -->
+                <button
+                  type="button"
+                  class="person person--01"
+                  id="person-01"
+                  data-primary="assets/page1-images/ai.png"
+                  aria-label="Person in the crowd, top left"
+                >
+                  <span class="person__pose">
+                    <img
+                      class="person__image"
+                      src="assets/page1-images/ai.png"
+                      alt="Cutout of a person near the top left of the crowd"
+                      loading="eager"
+                      draggable="false"
+                    />
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  class="person person--02"
+                  id="person-02"
+                  data-primary="assets/page1-images/krista.png"
+                  aria-label="Person in the crowd, top"
+                >
+                  <span class="person__pose">
+                    <img
+                      class="person__image"
+                      src="assets/page1-images/krista.png"
+                      alt="Cutout of a person near the top of the crowd"
+                      loading="eager"
+                      draggable="false"
+                    />
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  class="person person--03"
+                  id="person-03"
+                  data-primary="assets/page1-images/lakshita.png"
+                  aria-label="Person in the crowd, top middle"
+                >
+                  <span class="person__pose">
+                    <img
+                      class="person__image"
+                      src="assets/page1-images/lakshita.png"
+                      alt="Cutout of a person near the top middle of the crowd"
+                      loading="eager"
+                      draggable="false"
+                    />
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  class="person person--04"
+                  id="person-04"
+                  data-primary="assets/page1-images/olivia.png"
+                  aria-label="Person in the crowd, top right"
+                >
+                  <span class="person__pose">
+                    <img
+                      class="person__image"
+                      src="assets/page1-images/olivia.png"
+                      alt="Cutout of a person near the top right of the crowd"
+                      loading="eager"
+                      draggable="false"
+                    />
+                  </span>
+                </button>
+
+                <!-- row 2 -->
+                <button
+                  type="button"
+                  class="person person--05"
+                  id="person-05"
+                  data-primary="assets/page1-images/gahyun-1.png"
+                  data-alt="assets/page1-images/gahyun-2.png"
+                  aria-label="Person in the crowd, middle left"
+                >
+                  <span class="person__pose">
+                    <img
+                      class="person__image"
+                      src="assets/page1-images/gahyun-1.png"
+                      alt="Cutout of a person on the middle left of the crowd"
+                      loading="eager"
+                      draggable="false"
+                    />
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  class="person person--06"
+                  id="person-06"
+                  data-primary="assets/page1-images/gilang-1.png"
+                  data-alt="assets/page1-images/gilang-2.png"
+                  aria-label="Person in the crowd, middle"
+                >
+                  <span class="person__pose">
+                    <img
+                      class="person__image"
+                      src="assets/page1-images/gilang-1.png"
+                      alt="Cutout of a person in the middle of the crowd"
+                      loading="eager"
+                      draggable="false"
+                    />
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  class="person person--07"
+                  id="person-07"
+                  data-primary="assets/page1-images/kaylen-1.png"
+                  data-alt="assets/page1-images/kaylen-2.png"
+                  aria-label="Person in the crowd, middle right"
+                >
+                  <span class="person__pose">
+                    <img
+                      class="person__image"
+                      src="assets/page1-images/kaylen-1.png"
+                      alt="Cutout of a person on the middle right of the crowd"
+                      loading="eager"
+                      draggable="false"
+                    />
+                  </span>
+                </button>
+
+                <!-- row 3 -->
+                <button
+                  type="button"
+                  class="person person--08"
+                  id="person-08"
+                  data-primary="assets/page1-images/jamie-1.png"
+                  data-alt="assets/page1-images/jamie-2.png"
+                  aria-label="Person in the crowd, bottom left"
+                >
+                  <span class="person__pose">
+                    <img
+                      class="person__image"
+                      src="assets/page1-images/jamie-1.png"
+                      alt="Cutout of a person near the bottom left of the crowd"
+                      loading="eager"
+                      draggable="false"
+                    />
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  class="person person--09"
+                  id="person-09"
+                  data-primary="assets/page1-images/mannat-1.png"
+                  data-alt="assets/page1-images/mannat-2.png"
+                  aria-label="Person in the crowd, bottom center"
+                >
+                  <span class="person__pose">
+                    <img
+                      class="person__image"
+                      src="assets/page1-images/mannat-1.png"
+                      alt="Cutout of a person near the bottom center of the crowd"
+                      loading="eager"
+                      draggable="false"
+                    />
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  class="person person--10"
+                  id="person-10"
+                  data-primary="assets/page1-images/tahisha-1.png"
+                  data-alt="assets/page1-images/tahisha-2.png"
+                  aria-label="Person in the crowd, bottom right"
+                >
+                  <span class="person__pose">
+                    <img
+                      class="person__image"
+                      src="assets/page1-images/tahisha-1.png"
+                      alt="Cutout of a person near the bottom right of the crowd"
+                      loading="eager"
+                      draggable="false"
+                    />
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
 
           <div class="elevator__interface">
             <div class="elevator__display-wrap">
@@ -94,35 +304,35 @@
                 role="group"
                 aria-label="Floor selection"
               >
-                <button
-                  type="button"
+                <a
                   class="elevator__button"
+                  href="floor3.html"
                   data-floor="3"
                   aria-label="Floor 3"
-                  aria-pressed="false"
-                ></button>
-                <button
-                  type="button"
+                  aria-current="false"
+                ></a>
+                <a
                   class="elevator__button"
+                  href="floor2.html"
                   data-floor="2"
                   aria-label="Floor 2"
-                  aria-pressed="false"
-                ></button>
-                <button
-                  type="button"
+                  aria-current="false"
+                ></a>
+                <a
                   class="elevator__button"
+                  href="floor1.html"
                   data-floor="1"
                   aria-label="Floor 1"
-                  aria-pressed="false"
-                ></button>
+                  aria-current="false"
+                ></a>
               </div>
             </div>
           </div>
 
-          <button
-            type="button"
+          <a
             class="elevator__note elevator__note--under-sign elevator__note--home-link"
             id="sticky-note"
+            href="index.html"
             aria-label="Go home"
           >
             <img
@@ -132,7 +342,7 @@
               draggable="false"
             />
             <span class="elevator__note-text">HOME?</span>
-          </button>
+          </a>
         </div>
       </section>
     </main>
@@ -145,5 +355,6 @@
     ></audio>
 
     <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/people.js"></script>
   </body>
 </html>

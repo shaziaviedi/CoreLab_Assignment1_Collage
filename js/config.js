@@ -1,4 +1,4 @@
-// shared constants for index + floor pages
+// shared constants for index & floor pages
 
 export const FLOOR_PAGES = {
   1: "floor1.html",

@@ -6,11 +6,7 @@
     <title>Elevator Collage — Entrance</title>
     <link rel="stylesheet" href="style.css" />
     <!-- kick off elevator graphics early -->
-    <link
-      rel="preload"
-      href="assets/elevator-images/elevator.png"
-      as="image"
-    />
+    <link rel="preload" href="assets/elevator-images/elevator.png" as="image" />
     <link
       rel="preload"
       href="assets/elevator-images/elevator-door-left.png"
@@ -105,27 +101,27 @@
                 role="group"
                 aria-label="Floor selection"
               >
-                <button
-                  type="button"
+                <a
                   class="elevator__button"
+                  href="floor3.html"
                   data-floor="3"
                   aria-label="Floor 3"
-                  aria-pressed="false"
-                ></button>
-                <button
-                  type="button"
+                  aria-current="false"
+                ></a>
+                <a
                   class="elevator__button"
+                  href="floor2.html"
                   data-floor="2"
                   aria-label="Floor 2"
-                  aria-pressed="false"
-                ></button>
-                <button
-                  type="button"
+                  aria-current="false"
+                ></a>
+                <a
                   class="elevator__button"
+                  href="floor1.html"
                   data-floor="1"
                   aria-label="Floor 1"
-                  aria-pressed="false"
-                ></button>
+                  aria-current="false"
+                ></a>
               </div>
             </div>
           </div>
@@ -137,7 +133,10 @@
             draggable="false"
           />
 
-          <div class="elevator__note elevator__note--under-sign" id="sticky-note">
+          <div
+            class="elevator__note elevator__note--under-sign"
+            id="sticky-note"
+          >
             <img
               class="elevator__note-image"
               src="assets/homepage-images/note.png"

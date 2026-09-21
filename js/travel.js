@@ -44,10 +44,10 @@ function activateInteractiveElevator() {
   );
 }
 
-async function runHomepageTrip(floor) {
+async function runHomepageTrip(floor, href) {
   markDestinationSelection(floor, state.ui.buttons, state.ui.panelImage);
 
-  // fly off sign + note while we swap to layered elevator
+  // fly off sign & note while we swap to layered elevator
   const flyPromise = Promise.all([flyAwayWelcomeSign(), flyAwayStickyNote()]);
   activateInteractiveElevator();
 
@@ -69,19 +69,21 @@ async function runHomepageTrip(floor) {
   stopElevatorMusic();
 
   saveTripForNavigation(null, floor);
-  window.location.href = FLOOR_PAGES[floor];
+  window.location.href = href || FLOOR_PAGES[floor];
 }
 
-export async function runFloorTrip(floor) {
+export async function runFloorTrip(floor, href) {
   if (state.isTripInProgress) return;
   if (!FLOOR_PAGES[floor]) return;
+
+  const targetHref = href || FLOOR_PAGES[floor];
 
   setControlsBusy(true, state.ui.buttons);
 
   // homepage first ride is always 3s, skip floor-diff math
   if (state.isHomePage && state.currentFloor == null) {
     try {
-      await runHomepageTrip(floor);
+      await runHomepageTrip(floor, targetHref);
     } catch (error) {
       console.warn("homepage trip failed", error);
       stopElevatorMusic();
@@ -110,7 +112,7 @@ export async function runFloorTrip(floor) {
   const path = buildFloorPath(fromFloor, floor);
 
   console.log(
-    `trip ${fromFloor ?? "lobby"} → ${floor} | ${travelMs}ms then go to ${FLOOR_PAGES[floor]}`,
+    `trip ${fromFloor ?? "lobby"} → ${floor} | ${travelMs}ms then go to ${targetHref}`,
   );
 
   try {
@@ -144,7 +146,7 @@ export async function runFloorTrip(floor) {
     }
 
     saveTripForNavigation(fromFloor, floor);
-    window.location.href = FLOOR_PAGES[floor];
+    window.location.href = targetHref;
   } catch (error) {
     console.warn("trip failed", error);
     stopElevatorMusic();
@@ -176,7 +178,7 @@ export async function handleArrival(destination) {
   console.log(`arrived floor ${destination}, doors open`);
 }
 
-export async function goHomeFromNote() {
+export async function goHomeFromNote(href) {
   if (state.isTripInProgress) return;
   state.isTripInProgress = true;
   setControlsBusy(true, state.ui.buttons);
@@ -189,7 +191,7 @@ export async function goHomeFromNote() {
     }
     sessionStorage.setItem(STORAGE.currentFloor, "0");
     sessionStorage.removeItem(STORAGE.pendingArrival);
-    window.location.href = "index.html";
+    window.location.href = href || "index.html";
   } catch (error) {
     console.warn("home trip failed", error);
     state.isTripInProgress = false;

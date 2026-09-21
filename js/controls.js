@@ -41,7 +41,7 @@ export function markDestinationSelection(floor, buttons, panelImage) {
   buttons.forEach((button) => {
     const isSelected = Number(button.dataset.floor) === floor;
     button.classList.toggle("is-selected", isSelected);
-    button.setAttribute("aria-pressed", String(isSelected));
+    button.setAttribute("aria-current", isSelected ? "page" : "false");
   });
 
   if (panelImage) {
@@ -107,8 +107,21 @@ export async function animateFloorDisplay(
 export function setControlsBusy(busy, buttons) {
   state.isTripInProgress = busy;
   buttons.forEach((button) => {
-    button.disabled = busy;
+    button.classList.toggle("is-busy", busy);
+    button.setAttribute("aria-disabled", String(busy));
+    if (busy) {
+      button.setAttribute("tabindex", "-1");
+    } else {
+      button.removeAttribute("tabindex");
+    }
   });
+
+  const homeLink = document.querySelector(".elevator__note--home-link");
+  if (homeLink) {
+    homeLink.classList.toggle("is-busy", busy);
+    homeLink.setAttribute("aria-disabled", String(busy));
+  }
+
   if (state.elevatorEl) {
     state.elevatorEl.classList.toggle("elevator--traveling", busy);
   }

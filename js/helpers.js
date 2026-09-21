@@ -96,15 +96,18 @@ function loadImage(src) {
 async function preloadElevatorGraphics() {
   const urls = new Set(ELEVATOR_GRAPHICS);
 
-  // whatever imgs are already in the elevator markup
-  document.querySelectorAll(".elevator img[src]").forEach((img) => {
-    const src = img.getAttribute("src");
-    if (src) urls.add(src);
-  });
+  // only chrome — not floor collage art (those made floor2 sit on black forever)
+  document
+    .querySelectorAll(
+      ".elevator__door[src], .elevator__frame[src], .elevator__closed-shot[src], .elevator__display[src], .elevator__panel-image[src], .elevator__welcome[src]",
+    )
+    .forEach((img) => {
+      const src = img.getAttribute("src");
+      if (src) urls.add(src);
+    });
 
   await Promise.all([...urls].map(loadImage));
 
-  // decode in-dom ones so first paint is clean
   const critical = document.querySelectorAll(
     ".elevator__door, .elevator__frame, .elevator__closed-shot, .elevator__display, .elevator__panel-image",
   );
@@ -118,8 +121,8 @@ async function preloadElevatorGraphics() {
 }
 
 export async function ensureElevatorGraphicsReady() {
-  // timeout so a hung image doesnt leave us stuck on black
-  await Promise.race([preloadElevatorGraphics(), wait(4000)]);
+  // short timeout so we dont flash a long black screen
+  await Promise.race([preloadElevatorGraphics(), wait(1500)]);
   if (state.elevatorEl) {
     state.elevatorEl.classList.add("elevator--ready");
   }

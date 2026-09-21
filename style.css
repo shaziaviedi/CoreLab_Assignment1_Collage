@@ -1,4 +1,4 @@
-/* elevator collage — positioning + door animation */
+/* elevator collage — positioning & door animation */
 
 @font-face {
   font-family: "Pencilant Script";
@@ -129,7 +129,7 @@ button {
   transform-origin: center center;
 }
 
-/* frame + collage stay put, only doors slide */
+/* frame & collage stay put, only doors slide */
 .elevator__collage,
 .elevator__frame,
 .elevator__closed-shot {
@@ -219,17 +219,20 @@ button {
 .elevator__note {
   position: absolute;
   z-index: 7;
+  display: block;
   width: var(--note-width);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   user-select: none;
+  text-decoration: none;
+  color: inherit;
   transition:
     opacity var(--note-fade-duration) ease,
     visibility 0s linear var(--note-fade-duration);
 }
 
-/* same spot on homepage + floors (under welcome-sign coords) */
+/* same spot on homepage & floors (under welcome-sign coords) */
 .elevator__note--under-sign {
   left: var(--welcome-left);
   top: var(--welcome-top);
@@ -257,6 +260,8 @@ button {
 .elevator__note.is-visible.elevator__note--home-link {
   pointer-events: auto;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 
 .elevator__note-image {
@@ -330,7 +335,6 @@ button {
   padding: 1rem;
 }
 
-/* TODO: replace with real css grid collage */
 .elevator__collage-label {
   margin: 0;
   max-width: 90%;
@@ -497,6 +501,10 @@ button {
   border-radius: 50%;
   background: transparent;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  box-sizing: border-box;
 }
 
 .elevator__button[data-floor="3"] {
@@ -514,4 +522,10 @@ button {
 .elevator__button:focus-visible {
   outline: 2px solid #f5f5f5;
   outline-offset: 2px;
+}
+
+.elevator__button.is-busy,
+.elevator__note--home-link.is-busy {
+  pointer-events: none;
+  cursor: default;
 }

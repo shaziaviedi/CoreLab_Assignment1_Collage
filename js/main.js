@@ -9,14 +9,8 @@ import {
   wait,
 } from "./helpers.js";
 import { openDoors } from "./doors.js";
-import {
-  startStickyNoteIdleTimer,
-  startWelcomeFlicker,
-} from "./notes.js";
-import {
-  markDestinationSelection,
-  setDisplayFloor,
-} from "./controls.js";
+import { startStickyNoteIdleTimer, startWelcomeFlicker } from "./notes.js";
+import { markDestinationSelection, setDisplayFloor } from "./controls.js";
 import { goHomeFromNote, handleArrival, runFloorTrip } from "./travel.js";
 
 async function initPage() {
@@ -52,19 +46,11 @@ async function initPage() {
   ) {
     await handleArrival(pendingDestination);
   } else if (pageFloor != null) {
-    // direct load / refresh on a floor page
+    // direct load/ refresh on a floor page
     state.currentFloor = pageFloor;
     sessionStorage.setItem(STORAGE.currentFloor, String(pageFloor));
-    markDestinationSelection(
-      pageFloor,
-      state.ui.buttons,
-      state.ui.panelImage,
-    );
-    setDisplayFloor(
-      pageFloor,
-      state.ui.floorNumberEl,
-      state.ui.floorDisplayEl,
-    );
+    markDestinationSelection(pageFloor, state.ui.buttons, state.ui.panelImage);
+    setDisplayFloor(pageFloor, state.ui.floorNumberEl, state.ui.floorDisplayEl);
     await wait(ARRIVAL_RENDER_WAIT_MS);
     await openDoors();
     startStickyNoteIdleTimer();
@@ -80,17 +66,25 @@ async function initPage() {
   }
 
   state.ui.buttons.forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (event) => {
+      // delay nav till doors finish
+      event.preventDefault();
+      if (button.getAttribute("aria-disabled") === "true") return;
       const floor = Number(button.dataset.floor);
-      runFloorTrip(floor);
+      runFloorTrip(floor, button.href);
     });
   });
 
   // HOME? note — close doors then back to index
   const stickyNote = document.getElementById("sticky-note");
-  if (stickyNote && stickyNote.classList.contains("elevator__note--home-link")) {
-    stickyNote.addEventListener("click", () => {
-      goHomeFromNote();
+  if (
+    stickyNote &&
+    stickyNote.classList.contains("elevator__note--home-link")
+  ) {
+    stickyNote.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (stickyNote.getAttribute("aria-disabled") === "true") return;
+      goHomeFromNote(stickyNote.href);
     });
   }
 }

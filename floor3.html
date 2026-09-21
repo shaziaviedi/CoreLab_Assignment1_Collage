@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Floor 3 — Dreams</title>
     <link rel="stylesheet" href="style.css" />
-    <!-- doors + frame first so collage doesnt flash -->
+    <link rel="stylesheet" href="floor3.css" />
+    <!-- doors & frame first so collage doesnt flash -->
     <link
       rel="preload"
       href="assets/elevator-images/elevator-door-left.png"
@@ -37,9 +38,10 @@
       <section class="elevator elevator--closed" aria-label="Elevator floor 3">
         <!-- collage → doors → frame → ui -->
         <div class="elevator__stage">
-          <div class="elevator__collage">
-            <p class="elevator__collage-label">FLOOR 3 — DREAMS</p>
-          </div>
+          <div
+            class="elevator__collage elevator__collage--dreams"
+            aria-hidden="true"
+          ></div>
 
           <img
             class="elevator__door elevator__door--left left-door"
@@ -61,6 +63,261 @@
             alt="Elevator interior frame with open doorway, metal walls, handrails, and ceiling light"
             draggable="false"
           />
+
+          <!-- block metal clicks from hitting stars -->
+          <div class="dreams-blockers" aria-hidden="true">
+            <div class="dreams-blocker dreams-blocker--left"></div>
+            <div class="dreams-blocker dreams-blocker--right"></div>
+            <div class="dreams-blocker dreams-blocker--top"></div>
+            <div class="dreams-blocker dreams-blocker--bottom"></div>
+          </div>
+
+          <!-- dreams behind the doors -->
+          <div class="dreams-doorway">
+            <div class="dreams-space">
+              <!-- star→image pairs live in assets/page3-images/ -->
+              <div
+                class="dream-field"
+                role="region"
+                aria-label="Dream collage. Click stars to reveal images."
+              >
+                <div class="dream-portal dream-portal--b2">
+                  <button
+                    type="button"
+                    class="star"
+                    data-reveal="b2"
+                    aria-label="Reveal hidden dream image"
+                  >
+                    <span class="star__motion">
+                      <img
+                        class="star__image"
+                        src="assets/page3-images/star-1.png"
+                        alt=""
+                        draggable="false"
+                      />
+                    </span>
+                  </button>
+                  <figure class="dream-reveal" data-reveal="b2" hidden>
+                    <div class="dream-reveal__motion">
+                      <img
+                        class="dream-reveal__image"
+                        src="assets/page3-images/b2.png"
+                        alt="B-2 aircraft"
+                        draggable="false"
+                      />
+                    </div>
+                  </figure>
+                </div>
+
+                <div class="dream-portal dream-portal--f001">
+                  <button
+                    type="button"
+                    class="star"
+                    data-reveal="f001"
+                    aria-label="Reveal hidden dream image"
+                  >
+                    <span class="star__motion">
+                      <img
+                        class="star__image"
+                        src="assets/page3-images/star-2.png"
+                        alt=""
+                        draggable="false"
+                      />
+                    </span>
+                  </button>
+                  <figure class="dream-reveal" data-reveal="f001" hidden>
+                    <div class="dream-reveal__motion">
+                      <img
+                        class="dream-reveal__image"
+                        src="assets/page3-images/f001.png"
+                        alt="Aircraft F001"
+                        draggable="false"
+                      />
+                    </div>
+                  </figure>
+                </div>
+
+                <div class="dream-portal dream-portal--robot2">
+                  <button
+                    type="button"
+                    class="star"
+                    data-reveal="robot2"
+                    aria-label="Reveal hidden dream image"
+                  >
+                    <span class="star__motion">
+                      <img
+                        class="star__image"
+                        src="assets/page3-images/star-4.png"
+                        alt=""
+                        draggable="false"
+                      />
+                    </span>
+                  </button>
+                  <figure class="dream-reveal" data-reveal="robot2" hidden>
+                    <div class="dream-reveal__motion">
+                      <img
+                        class="dream-reveal__image"
+                        src="assets/page3-images/robot-2.png"
+                        alt="Robot"
+                        draggable="false"
+                      />
+                    </div>
+                  </figure>
+                </div>
+
+                <div class="dream-portal dream-portal--brain">
+                  <button
+                    type="button"
+                    class="star"
+                    data-reveal="brain"
+                    aria-label="Reveal hidden dream image"
+                  >
+                    <span class="star__motion">
+                      <img
+                        class="star__image"
+                        src="assets/page3-images/star-4.png"
+                        alt=""
+                        draggable="false"
+                      />
+                    </span>
+                  </button>
+                  <figure class="dream-reveal" data-reveal="brain" hidden>
+                    <div class="dream-reveal__motion">
+                      <img
+                        class="dream-reveal__image"
+                        src="assets/page3-images/brain.png"
+                        alt="Brain"
+                        draggable="false"
+                      />
+                    </div>
+                  </figure>
+                </div>
+
+                <div class="dream-portal dream-portal--robot">
+                  <button
+                    type="button"
+                    class="star"
+                    data-reveal="robot"
+                    aria-label="Reveal hidden dream image"
+                  >
+                    <span class="star__motion">
+                      <img
+                        class="star__image"
+                        src="assets/page3-images/star-5.png"
+                        alt=""
+                        draggable="false"
+                      />
+                    </span>
+                  </button>
+                  <figure class="dream-reveal" data-reveal="robot" hidden>
+                    <div class="dream-reveal__motion">
+                      <img
+                        class="dream-reveal__image"
+                        src="assets/page3-images/robot-1.png"
+                        alt="Robot"
+                        draggable="false"
+                      />
+                    </div>
+                  </figure>
+                </div>
+
+                <div class="dream-portal dream-portal--mit">
+                  <button
+                    type="button"
+                    class="star"
+                    data-reveal="mit"
+                    aria-label="Reveal hidden dream image"
+                  >
+                    <span class="star__motion">
+                      <img
+                        class="star__image"
+                        src="assets/page3-images/star-1.png"
+                        alt=""
+                        draggable="false"
+                      />
+                    </span>
+                  </button>
+                  <figure class="dream-reveal" data-reveal="mit" hidden>
+                    <div class="dream-reveal__motion">
+                      <img
+                        class="dream-reveal__image"
+                        src="assets/page3-images/mit.png"
+                        alt="MIT campus"
+                        draggable="false"
+                      />
+                    </div>
+                  </figure>
+                </div>
+
+                <div class="dream-portal dream-portal--skyline">
+                  <button
+                    type="button"
+                    class="star"
+                    data-reveal="skyline"
+                    aria-label="Reveal hidden dream image"
+                  >
+                    <span class="star__motion">
+                      <img
+                        class="star__image"
+                        src="assets/page3-images/star-3.png"
+                        alt=""
+                        draggable="false"
+                      />
+                    </span>
+                  </button>
+                  <figure class="dream-reveal" data-reveal="skyline" hidden>
+                    <div class="dream-reveal__motion">
+                      <img
+                        class="dream-reveal__image"
+                        src="assets/page3-images/skyline.png"
+                        alt="NYC skyline"
+                        draggable="false"
+                      />
+                    </div>
+                  </figure>
+                </div>
+
+                <div class="dream-portal dream-portal--books">
+                  <button
+                    type="button"
+                    class="star"
+                    data-reveal="books"
+                    aria-label="Reveal hidden dream image"
+                  >
+                    <span class="star__motion">
+                      <img
+                        class="star__image"
+                        src="assets/page3-images/star-3.png"
+                        alt=""
+                        draggable="false"
+                      />
+                    </span>
+                  </button>
+                  <figure class="dream-reveal" data-reveal="books" hidden>
+                    <div class="dream-reveal__motion">
+                      <img
+                        class="dream-reveal__image"
+                        src="assets/page3-images/books.png"
+                        alt="Stack of books"
+                        draggable="false"
+                      />
+                    </div>
+                  </figure>
+                </div>
+
+                <div class="dream-woman">
+                  <div class="dream-woman__motion">
+                    <img
+                      class="dream-woman__image"
+                      src="assets/page3-images/woman.png"
+                      alt="A woman dreaming"
+                      draggable="false"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="elevator__interface">
             <div class="elevator__display-wrap">
@@ -94,35 +351,35 @@
                 role="group"
                 aria-label="Floor selection"
               >
-                <button
-                  type="button"
+                <a
                   class="elevator__button"
+                  href="floor3.html"
                   data-floor="3"
                   aria-label="Floor 3"
-                  aria-pressed="false"
-                ></button>
-                <button
-                  type="button"
+                  aria-current="false"
+                ></a>
+                <a
                   class="elevator__button"
+                  href="floor2.html"
                   data-floor="2"
                   aria-label="Floor 2"
-                  aria-pressed="false"
-                ></button>
-                <button
-                  type="button"
+                  aria-current="false"
+                ></a>
+                <a
                   class="elevator__button"
+                  href="floor1.html"
                   data-floor="1"
                   aria-label="Floor 1"
-                  aria-pressed="false"
-                ></button>
+                  aria-current="false"
+                ></a>
               </div>
             </div>
           </div>
 
-          <button
-            type="button"
+          <a
             class="elevator__note elevator__note--under-sign elevator__note--home-link"
             id="sticky-note"
+            href="index.html"
             aria-label="Go home"
           >
             <img
@@ -132,7 +389,7 @@
               draggable="false"
             />
             <span class="elevator__note-text">HOME?</span>
-          </button>
+          </a>
         </div>
       </section>
     </main>
@@ -144,6 +401,14 @@
       preload="auto"
     ></audio>
 
+    <audio
+      id="dreams-music"
+      src="assets/audio/space.mp3"
+      loop
+      preload="auto"
+    ></audio>
+
     <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/dreams.js"></script>
   </body>
 </html>

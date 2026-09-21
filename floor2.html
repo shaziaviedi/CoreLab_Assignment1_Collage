@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Floor 2 — Interests</title>
+    <title>Floor 2 — The Archives</title>
     <link rel="stylesheet" href="style.css" />
-    <!-- doors + frame first so collage doesnt flash -->
+    <link rel="stylesheet" href="floor2.css" />
+    <!-- doors & frame first so collage doesnt flash -->
     <link
       rel="preload"
       href="assets/elevator-images/elevator-door-left.png"
@@ -37,9 +38,10 @@
       <section class="elevator elevator--closed" aria-label="Elevator floor 2">
         <!-- collage → doors → frame → ui -->
         <div class="elevator__stage">
-          <div class="elevator__collage">
-            <p class="elevator__collage-label">FLOOR 2 — INTERESTS</p>
-          </div>
+          <div
+            class="elevator__collage elevator__collage--archives"
+            aria-hidden="true"
+          ></div>
 
           <img
             class="elevator__door elevator__door--left left-door"
@@ -61,6 +63,262 @@
             alt="Elevator interior frame with open doorway, metal walls, handrails, and ceiling light"
             draggable="false"
           />
+
+          <!-- catches clicks on metal so they dont reach artworks behind the frame -->
+          <div class="archives__blockers" aria-hidden="true">
+            <div class="archives__blocker archives__blocker--left"></div>
+            <div class="archives__blocker archives__blocker--right"></div>
+            <div class="archives__blocker archives__blocker--top"></div>
+            <div class="archives__blocker archives__blocker--bottom"></div>
+          </div>
+
+          <!-- doorway & sky & gallery (behind doors/frame) -->
+          <div class="archives__doorway">
+            <div class="archives__sky" aria-hidden="true"></div>
+            <div class="archives__gallery">
+              <!-- top belt: drifts right → left -->
+              <div
+                class="gallery-row gallery-row--top"
+                data-gallery-row
+                aria-label="Archive row moving left"
+              >
+                <div class="gallery-shift">
+                  <div class="gallery-track">
+                    <div class="gallery-set" data-gallery-set>
+                      <figure
+                        class="artwork artwork--tall artwork--featured artwork--tilt-a"
+                        style="--art-ratio: 2640 / 3300"
+                        tabindex="0"
+                      >
+                        <div class="artwork__media">
+                          <span class="artwork__fallback" aria-hidden="true"
+                            >ART 01</span
+                          >
+                          <img
+                            src="assets/page2-images/painting-1.PNG"
+                            alt="Portrait painting of a person with long hair"
+                            loading="eager"
+                            draggable="false"
+                          />
+                        </div>
+                      </figure>
+
+                      <figure
+                        class="artwork artwork--medium artwork--tilt-b artwork--overlap-left"
+                        style="--art-ratio: 2753 / 2031"
+                        tabindex="0"
+                      >
+                        <div class="artwork__media">
+                          <span class="artwork__fallback" aria-hidden="true"
+                            >ART 02</span
+                          >
+                          <img
+                            src="assets/page2-images/drawing-1.JPG"
+                            alt="Pencil drawing artwork"
+                            loading="eager"
+                            draggable="false"
+                          />
+                        </div>
+                      </figure>
+
+                      <figure
+                        class="artwork artwork--wide artwork--tilt-c"
+                        style="--art-ratio: 1535 / 770"
+                        tabindex="0"
+                      >
+                        <div class="artwork__media">
+                          <span class="artwork__fallback" aria-hidden="true"
+                            >ART 03</span
+                          >
+                          <img
+                            src="assets/page2-images/painting-6.JPG"
+                            alt="Wide landscape painting"
+                            loading="eager"
+                            draggable="false"
+                          />
+                        </div>
+                      </figure>
+
+                      <figure
+                        class="artwork artwork--large artwork--overlap-right"
+                        style="--art-ratio: 3508 / 2480"
+                        tabindex="0"
+                      >
+                        <div class="artwork__media">
+                          <span class="artwork__fallback" aria-hidden="true"
+                            >ART 04</span
+                          >
+                          <img
+                            src="assets/page2-images/sculpture-1.PNG"
+                            alt="Sculpture photograph"
+                            loading="eager"
+                            draggable="false"
+                          />
+                        </div>
+                      </figure>
+
+                      <figure
+                        class="artwork artwork--tall artwork--tilt-a"
+                        style="--art-ratio: 1136 / 1600"
+                        tabindex="0"
+                      >
+                        <div class="artwork__media">
+                          <span class="artwork__fallback" aria-hidden="true"
+                            >ART 05</span
+                          >
+                          <img
+                            src="assets/page2-images/painting-3.JPG"
+                            alt="Tall portrait painting"
+                            loading="eager"
+                            draggable="false"
+                          />
+                        </div>
+                      </figure>
+
+                      <figure
+                        class="artwork artwork--wide artwork--tilt-b artwork--overlap-left"
+                        style="--art-ratio: 3832 / 1955"
+                        tabindex="0"
+                      >
+                        <div class="artwork__media">
+                          <span class="artwork__fallback" aria-hidden="true"
+                            >ART 06</span
+                          >
+                          <img
+                            src="assets/page2-images/journal-1.JPG"
+                            alt="Open journal page with sketches"
+                            loading="eager"
+                            draggable="false"
+                          />
+                        </div>
+                      </figure>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- bottom belt: drifts left → right -->
+              <div
+                class="gallery-row gallery-row--bottom"
+                data-gallery-row
+                aria-label="Archive row moving right"
+              >
+                <div class="gallery-shift">
+                  <div class="gallery-track">
+                    <div class="gallery-set" data-gallery-set>
+                      <figure
+                        class="artwork artwork--large artwork--featured artwork--tilt-b"
+                        style="--art-ratio: 6047 / 4032"
+                        tabindex="0"
+                      >
+                        <div class="artwork__media">
+                          <span class="artwork__fallback" aria-hidden="true"
+                            >ART 07</span
+                          >
+                          <img
+                            src="assets/page2-images/sculpture-2.JPG"
+                            alt="Large sculpture installation photograph"
+                            loading="eager"
+                            draggable="false"
+                          />
+                        </div>
+                      </figure>
+
+                      <figure
+                        class="artwork artwork--tall artwork--tilt-c artwork--overlap-left"
+                        style="--art-ratio: 2400 / 3000"
+                        tabindex="0"
+                      >
+                        <div class="artwork__media">
+                          <span class="artwork__fallback" aria-hidden="true"
+                            >ART 08</span
+                          >
+                          <img
+                            src="assets/page2-images/painting-2.PNG"
+                            alt="Portrait painting"
+                            loading="eager"
+                            draggable="false"
+                          />
+                        </div>
+                      </figure>
+
+                      <figure
+                        class="artwork artwork--medium artwork--tilt-a"
+                        style="--art-ratio: 3212 / 2514"
+                        tabindex="0"
+                      >
+                        <div class="artwork__media">
+                          <span class="artwork__fallback" aria-hidden="true"
+                            >ART 09</span
+                          >
+                          <img
+                            src="assets/page2-images/drawing-2.JPG"
+                            alt="Detailed pencil drawing"
+                            loading="eager"
+                            draggable="false"
+                          />
+                        </div>
+                      </figure>
+
+                      <figure
+                        class="artwork artwork--small artwork--overlap-right"
+                        style="--art-ratio: 2560 / 2575"
+                        tabindex="0"
+                      >
+                        <div class="artwork__media">
+                          <span class="artwork__fallback" aria-hidden="true"
+                            >ART 10</span
+                          >
+                          <img
+                            src="assets/page2-images/painting-4.JPG"
+                            alt="Nearly square painting"
+                            loading="eager"
+                            draggable="false"
+                          />
+                        </div>
+                      </figure>
+
+                      <figure
+                        class="artwork artwork--wide artwork--tilt-b artwork--featured"
+                        style="--art-ratio: 4028 / 2350"
+                        tabindex="0"
+                      >
+                        <div class="artwork__media">
+                          <span class="artwork__fallback" aria-hidden="true"
+                            >ART 11</span
+                          >
+                          <img
+                            src="assets/page2-images/journal-2.PNG"
+                            alt="Journal spread with drawings and notes"
+                            loading="eager"
+                            draggable="false"
+                          />
+                        </div>
+                      </figure>
+
+                      <figure
+                        class="artwork artwork--tall artwork--tilt-c artwork--overlap-left"
+                        style="--art-ratio: 2707 / 3414"
+                        tabindex="0"
+                      >
+                        <div class="artwork__media">
+                          <span class="artwork__fallback" aria-hidden="true"
+                            >ART 12</span
+                          >
+                          <img
+                            src="assets/page2-images/painting-5.JPG"
+                            alt="Tall figure painting"
+                            loading="eager"
+                            draggable="false"
+                          />
+                        </div>
+                      </figure>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="elevator__interface">
             <div class="elevator__display-wrap">
@@ -94,35 +352,35 @@
                 role="group"
                 aria-label="Floor selection"
               >
-                <button
-                  type="button"
+                <a
                   class="elevator__button"
+                  href="floor3.html"
                   data-floor="3"
                   aria-label="Floor 3"
-                  aria-pressed="false"
-                ></button>
-                <button
-                  type="button"
+                  aria-current="false"
+                ></a>
+                <a
                   class="elevator__button"
+                  href="floor2.html"
                   data-floor="2"
                   aria-label="Floor 2"
-                  aria-pressed="false"
-                ></button>
-                <button
-                  type="button"
+                  aria-current="false"
+                ></a>
+                <a
                   class="elevator__button"
+                  href="floor1.html"
                   data-floor="1"
                   aria-label="Floor 1"
-                  aria-pressed="false"
-                ></button>
+                  aria-current="false"
+                ></a>
               </div>
             </div>
           </div>
 
-          <button
-            type="button"
+          <a
             class="elevator__note elevator__note--under-sign elevator__note--home-link"
             id="sticky-note"
+            href="index.html"
             aria-label="Go home"
           >
             <img
@@ -132,7 +390,7 @@
               draggable="false"
             />
             <span class="elevator__note-text">HOME?</span>
-          </button>
+          </a>
         </div>
       </section>
     </main>
@@ -144,6 +402,14 @@
       preload="auto"
     ></audio>
 
+    <audio
+      id="gallery-music"
+      src="assets/audio/debussy.mp3"
+      loop
+      preload="auto"
+    ></audio>
+
     <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/archives.js"></script>
   </body>
 </html>

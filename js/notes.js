@@ -79,7 +79,7 @@ export function flyAwayStickyNote() {
   });
 }
 
-// swap lit / dim pngs for the welcome flicker
+// swap lit/dim pngs for the welcome flicker
 export function startWelcomeFlicker() {
   const sign = document.querySelector(".elevator__welcome");
   if (!sign) return;

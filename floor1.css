@@ -1,0 +1,377 @@
+/* floor 1 people */
+
+body[data-floor="1"] {
+  --doorway-left: 36.5%;
+  --doorway-right: 36.5%;
+  --doorway-top: 25%;
+  --doorway-bottom: 9%;
+}
+
+.elevator__collage--people {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: #000;
+}
+
+/* crowd sits in the door hole */
+
+.people-doorway {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  transform: translate(var(--elevator-shift-x), var(--elevator-shift-y));
+}
+
+.people-crowd {
+  position: absolute;
+  left: var(--doorway-left);
+  right: var(--doorway-right);
+  top: var(--doorway-top);
+  bottom: var(--doorway-bottom);
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+  background-color: #000;
+  background-image: url("assets/page1-images/background-grass.png");
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  /* width matches elevator opening; height follows image */
+  background-size: 100% auto;
+}
+
+.elevator--open .people-crowd {
+  pointer-events: auto;
+}
+
+/* metal blockers */
+
+.people-blockers {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  transform: translate(var(--elevator-shift-x), var(--elevator-shift-y));
+}
+
+.elevator--open .people-blocker {
+  pointer-events: auto;
+}
+
+.people-blocker {
+  position: absolute;
+  background: transparent;
+}
+
+.people-blocker--left {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--doorway-left);
+}
+
+.people-blocker--right {
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--doorway-right);
+}
+
+.people-blocker--top {
+  left: var(--doorway-left);
+  right: var(--doorway-right);
+  top: 0;
+  height: var(--doorway-top);
+}
+
+.people-blocker--bottom {
+  left: var(--doorway-left);
+  right: var(--doorway-right);
+  bottom: 0;
+  height: var(--doorway-bottom);
+}
+
+/* crowd grid */
+
+.crowd-grid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-rows: repeat(8, minmax(0, 1fr));
+  width: 106%;
+  height: 108%;
+  margin: -9% -3% 0;
+  gap: 0;
+  align-items: stretch;
+  justify-items: stretch;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* person size & brick stagger */
+
+.person {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: default;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  /* js checks opaque pixels for clicks */
+  pointer-events: none;
+
+  grid-column: var(--person-col, auto);
+  grid-row: var(--person-row, auto);
+  z-index: var(--person-z, 1);
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  align-self: stretch;
+  justify-self: stretch;
+  min-width: 0;
+  min-height: 0;
+
+  /* hop anim is on the inner wrapper */
+  transform: translate(var(--person-tx, 0%), var(--person-ty, 0%))
+    rotate(var(--person-rot, 0deg)) scale(var(--person-scale, 1));
+  transform-origin: center bottom;
+  transition: filter 0.2s ease;
+}
+
+.person__pose {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transform-origin: center bottom;
+  will-change: transform;
+}
+
+/* height scale so png res doesnt matter */
+.person__image {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+}
+
+.person__image.is-missing {
+  opacity: 0;
+  min-height: 4rem;
+}
+
+/* interaction */
+
+.people-crowd.is-over-person {
+  cursor: pointer;
+}
+
+.person.is-aimed {
+  z-index: 25;
+}
+
+.person.is-aimed .person__pose {
+  filter: brightness(1.05);
+  transform: scale(1.03);
+}
+
+.person:focus {
+  outline: none;
+}
+
+.person:focus-visible .person__pose {
+  outline: 2px solid #5a4a38;
+  outline-offset: 3px;
+}
+
+.person.is-reacting {
+  z-index: 40 !important;
+}
+
+.person.is-reacting .person__pose {
+  animation: person-hop 0.55s cubic-bezier(0.34, 1.25, 0.64, 1) both;
+}
+
+/* tiny hop */
+@keyframes person-hop {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+  35% {
+    transform: translateY(-10px) scale(1.05) rotate(-2deg);
+  }
+  70% {
+    transform: translateY(-3px) scale(1.02) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+/* placement — tweak nudge/scale per person */
+
+/* row 1 */
+.person--01 {
+  /* ai */
+  --person-col: 2 / span 2;
+  --person-row: 1 / span 3;
+  --person-scale: 1;
+  --person-rot: -5deg;
+  --person-tx: 2%;
+  --person-ty: 2%;
+  --person-z: 2;
+}
+
+.person--02 {
+  /* krista */
+  --person-col: 4 / span 2;
+  --person-row: 1 / span 3;
+  --person-scale: 0.8;
+  --person-rot: 4deg;
+  --person-tx: -12%;
+  --person-ty: -2%;
+  --person-z: 1;
+}
+
+.person--03 {
+  /* lakshita */
+  --person-col: 5 / span 2;
+  --person-row: 1 / span 3;
+  --person-scale: 1.38;
+  --person-rot: -3deg;
+  --person-tx: 38%;
+  --person-ty: 2%;
+  --person-z: 3;
+}
+
+/* row 2 */
+.person--05 {
+  /* gahyun */
+  --person-col: 2 / span 2;
+  --person-row: 3 / span 3;
+  --person-scale: 0.82;
+  --person-rot: -4deg;
+  --person-tx: 6%;
+  --person-ty: 0%;
+  --person-z: 5;
+}
+
+.person--06 {
+  /* gilang */
+  --person-col: 4 / span 2;
+  --person-row: 3 / span 3;
+  --person-scale: 1.36;
+  --person-rot: 3deg;
+  --person-tx: 0%;
+  --person-ty: -2%;
+  --person-z: 4;
+}
+
+.person--07 {
+  /* kaylen */
+  --person-col: 6 / span 2;
+  --person-row: 3 / span 3;
+  --person-scale: 0.96;
+  --person-rot: -5deg;
+  --person-tx: -6%;
+  --person-ty: 2%;
+  --person-z: 6;
+}
+
+/* row 3 */
+.person--08 {
+  /* jamie */
+  --person-col: 3 / span 2;
+  --person-row: 5 / span 3;
+  --person-scale: 1.14;
+  --person-rot: 4deg;
+  --person-tx: 12%;
+  --person-ty: 4%;
+  --person-z: 8;
+}
+
+.person--04 {
+  /* olivia */
+  --person-col: 2 / span 2;
+  --person-row: 5 / span 3;
+  --person-scale: 0.96;
+  --person-rot: 5deg;
+  --person-tx: 2%;
+  --person-ty: 2%;
+  --person-z: 8;
+}
+
+.person--09 {
+  /* mannat */
+  --person-col: 5 / span 2;
+  --person-row: 5 / span 3;
+  --person-scale: 1.14;
+  --person-rot: -3deg;
+  --person-tx: -14%;
+  --person-ty: 2%;
+  --person-z: 7;
+}
+
+.person--10 {
+  /* tahisha */
+  --person-col: 6 / span 2;
+  --person-row: 5 / span 3;
+  --person-scale: 1.14;
+  --person-rot: 2deg;
+  --person-tx: 6%;
+  --person-ty: 4%;
+  --person-z: 9;
+}
+
+/* responsive */
+
+@media (max-width: 900px) {
+  .crowd-grid {
+    width: 112%;
+    height: 110%;
+    margin: -10% -6% -2%;
+  }
+}
+
+@media (max-width: 600px) {
+  .crowd-grid {
+    width: 118%;
+    height: 112%;
+    margin: -11% -9% -3%;
+  }
+}
+
+/* reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .person.is-reacting .person__pose {
+    animation: person-hop-reduced 0.3s ease both;
+  }
+
+  @keyframes person-hop-reduced {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.04);
+    }
+  }
+
+  .person.is-aimed .person__pose {
+    transform: none;
+  }
+}
