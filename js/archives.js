@@ -258,6 +258,12 @@ function setupGalleryMusic() {
 
   audio.loop = true;
   audio.volume = 0.4;
+  // kick off download right away so play isnt waiting on art loads
+  try {
+    audio.load();
+  } catch (_) {
+    /* ignore */
+  }
 
   function sync() {
     if (elevator.classList.contains("elevator--open")) {
@@ -274,11 +280,17 @@ function setupGalleryMusic() {
 
   const observer = new MutationObserver(sync);
   observer.observe(elevator, { attributes: true, attributeFilter: ["class"] });
+
+  // if play isnt ready yet, retry once it can
+  audio.addEventListener("canplay", sync, { once: true });
   sync();
 }
 
 async function initArchives() {
   if (!document.querySelector(".archives__doorway")) return;
+
+  // music first — dont wait on image loads
+  setupGalleryMusic();
 
   const gallery = document.querySelector(".archives__gallery");
   const rows = document.querySelectorAll("[data-gallery-row]");
@@ -287,7 +299,6 @@ async function initArchives() {
   if (gallery) await waitForImages(gallery);
   cloneSetsForLoop();
   markMissingImages();
-  setupGalleryMusic();
 
   // one more frame so layout settles after cloning
   requestAnimationFrame(() => {
