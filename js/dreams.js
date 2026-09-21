@@ -1,6 +1,7 @@
 // floor 3 dreams
 
 const REVEAL_DURATION_MS = 5000;
+const SPACE_MUSIC_DELAY_MS = 4000;
 
 function setupDreamsMusic() {
   const audio = document.getElementById("dreams-music");
@@ -10,13 +11,34 @@ function setupDreamsMusic() {
   audio.loop = true;
   audio.volume = 0.45;
 
+  let playTimer = null;
+
+  function clearPlayTimer() {
+    if (playTimer != null) {
+      window.clearTimeout(playTimer);
+      playTimer = null;
+    }
+  }
+
+  function tryPlay() {
+    const playAttempt = audio.play();
+    if (playAttempt !== undefined) {
+      playAttempt.catch(() => {});
+    }
+  }
+
   function sync() {
     if (elevator.classList.contains("elevator--open")) {
-      const playAttempt = audio.play();
-      if (playAttempt !== undefined) {
-        playAttempt.catch(() => {});
-      }
+      if (playTimer != null || !audio.paused) return;
+      // short beat after doors open before space kicks in
+      playTimer = window.setTimeout(() => {
+        playTimer = null;
+        if (elevator.classList.contains("elevator--open")) {
+          tryPlay();
+        }
+      }, SPACE_MUSIC_DELAY_MS);
     } else {
+      clearPlayTimer();
       audio.pause();
     }
   }
